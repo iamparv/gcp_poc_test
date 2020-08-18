@@ -28,7 +28,7 @@ default_dag_args = {
 }
 
 with models.DAG(
-        'gcp_poc_automation_E2E',
+        'gcp_poc_test_automation_E2E',
         schedule_interval=datetime.timedelta(days=1),
         default_args=default_dag_args) as dag:
 
@@ -99,7 +99,7 @@ with models.DAG(
 		
     load_parquet_bqt = GoogleCloudStorageToBigQueryOperator(
         task_id='load_parquet_bqt',
-        bucket='dphivedb',
+        bucket='dataproc-staging-us-central1-788915459809-fk8wm6rc',
         source_objects=['HQL/PARQUET/*'],
         schema_fields=None,
         schema_object=None,
