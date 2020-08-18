@@ -28,7 +28,7 @@ default_dag_args = {
 }
 
 with models.DAG(
-        'gcp_poc_testing_automation_E2E',
+        'gcp_composer_poc_testing_automation_E2E',
         schedule_interval=datetime.timedelta(days=1),
         default_args=default_dag_args) as dag:
 
@@ -138,5 +138,11 @@ with models.DAG(
         bash_command= "bq query --use_legacy_sql=false \'SELECT COUNT(*) FROM datasetname.test3'",
         dag=dag)
 
+    dlt_composer_env = BashOperator(
+        task_id='dlt_composer_env',
+        bash_command='gcloud  composer environments delete test-environment \
+        --location us-central1 -q',
+        dag=dag)
 
-    create_dataproc_cluster >> dataproc_hive_create_db >> dataproc_hive_create_table_csv >> dataproc_hive_create_table_par >> dataproc_load_csv_table >> dataproc_load_par_table >> dataproc_hive_count_table_csv >> delete_dataproc_cluster >> load_parquet_bqt >> rm_par_file >> count_bq_table 
+
+    create_dataproc_cluster >> dataproc_hive_create_db >> dataproc_hive_create_table_csv >> dataproc_hive_create_table_par >> dataproc_load_csv_table >> dataproc_load_par_table >> dataproc_hive_count_table_csv >> delete_dataproc_cluster >> load_parquet_bqt >> rm_par_file >> count_bq_table >> dlt_composer_env
