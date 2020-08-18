@@ -28,7 +28,7 @@ default_dag_args = {
 }
 
 with models.DAG(
-        'gcp_poc_automation',
+        'gcp_poc_automation_E2E',
         schedule_interval=datetime.timedelta(days=1),
         default_args=default_dag_args) as dag:
 
