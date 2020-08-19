@@ -107,7 +107,7 @@ with models.DAG(
         destination_project_dataset_table='datasetname.test3',
         bigquery_conn_id='bigquery_default',
         google_cloud_storage_conn_id='google_cloud_default',
-        write_disposition='WRITE_TRUNCATE',
+        write_disposition='WRITE_APPEND',
         autodetect=True,
         delegate_to=None,
         udf_config=None,
