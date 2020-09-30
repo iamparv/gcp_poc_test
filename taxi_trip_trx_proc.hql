@@ -59,23 +59,3 @@ SELECT
   *
 FROM
   DEFAULT.chicago_taxi_trips_csv_autotestbq9;
-  
-INSERT OVERWRITE
-  TABLE DEFAULT.company_popularity
-  SELECT
-    EXTRACT(YEAR
-    FROM
-      trip_start_timestamp) AS year,
-    COUNT(1) AS num_trips,
-    company
-  FROM
-    `DEFAULT.chicago_taxi_trips_parquet_autotestbq9`
-  GROUP BY
-    year,
-    company
-  HAVING
-    COUNT(1) >= 10000
-  ORDER BY
-    year DESC,
-    num_trips DESC,
-    company;
