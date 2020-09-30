@@ -145,4 +145,4 @@ with models.DAG(
         dag=dag)
 
 
-    create_dataproc_cluster >> dataproc_hive_create_db >> dataproc_hive_create_table_csv >> dataproc_hive_create_table_par >> dataproc_load_csv_table >> dataproc_load_par_table >> dataproc_hive_count_table_csv >> delete_dataproc_cluster >> load_parquet_bqt >> rm_par_file >> count_bq_table
+    create_dataproc_cluster >> dataproc_hive_create_db >> dataproc_hive_create_table_csv >> dataproc_hive_create_table_par >> dataproc_load_csv_table >> dataproc_load_par_table >> delete_dataproc_cluster >> load_parquet_bqt >> rm_par_file
