@@ -80,22 +80,11 @@ with models.DAG(
         region='us-west4',
         dag=dag)
         
-   
-    dataproc_hive_count_table_csv = DataProcHiveOperator(
-        task_id='dataproc_hive_count_table_csv',
-        gcp_conn_id='google_cloud_default', 
-        query="select count(*) from default.chicago_taxi_trips_csv_autotestbq9",
-        cluster_name='dataproc',
-        region='us-west4',
-        dag=dag)
-
     delete_dataproc_cluster = dataproc_operator.DataprocClusterDeleteOperator(
         task_id='delete_dataproc_cluster',
         cluster_name='dataproc',
         region='us-west4',
         trigger_rule=trigger_rule.TriggerRule.ALL_DONE)
-
-
 		
     load_parquet_bqt = GoogleCloudStorageToBigQueryOperator(
         task_id='load_parquet_bqt',
@@ -135,17 +124,5 @@ with models.DAG(
         task_id='rm_par_file',
         bash_command='gsutil -m rm -R gs://dataproc-staging-us-central1-788915459809-fk8wm6rc/HQL/PARQUET/*;',
         dag=dag)
-
-    count_bq_table = BashOperator(
-        task_id='count_bq_table',
-        bash_command= "bq query --use_legacy_sql=false \'SELECT COUNT(*) FROM datasetname.test3'",
-        dag=dag)
-
-    dlt_composer_env = BashOperator(
-        task_id='dlt_composer_env',
-        bash_command='gcloud  composer environments delete test-environment \
-        --location us-central1 -q',
-        dag=dag)
-
 
     create_dataproc_cluster >> dataproc_hive_create_db >> dataproc_hive_create_table_csv >> dataproc_hive_create_table_par >> dataproc_load_csv_table >> dataproc_load_par_table >> delete_dataproc_cluster >> load_parquet_bqt >> rm_par_file
