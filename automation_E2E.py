@@ -115,11 +115,6 @@ with models.DAG(
         encryption_configuration=None,
         dag=dag)
 
-    populate_company_popularity = BashOperator(
-        task_id='populare_company_popularity',
-        bash_command= "bq query --use_legacy_sql=false \'create table datasetname.company_popularity as (SELECT EXTRACT(YEAR FROM trip_start_timestamp) AS year, COUNT(1) AS num_trips, company FROM datasetname.test3 GROUP BY year, company HAVING COUNT(1) >= 10000 ORDER BY year desc, num_trips desc, company'",
-        dag=dag)
-
     rm_par_file = BashOperator(
         task_id='rm_par_file',
         bash_command='gsutil -m rm -R gs://dataproc-staging-us-central1-788915459809-fk8wm6rc/HQL/PARQUET/*;',
